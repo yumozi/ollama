@@ -100,6 +100,14 @@ type ChatResponse struct {
 
 	Done bool `json:"done"`
 
+	CompletionProbabilities []struct {
+		Content string `json:"content"`
+		Probs   []struct {
+			Prob   float64 `json:"prob"`
+			TokStr string  `json:"tok_str"`
+		} `json:"probs"`
+	} `json:"completion_probabilities,omitempty"`
+
 	Metrics
 }
 
@@ -120,6 +128,7 @@ type Options struct {
 	NumKeep          int      `json:"num_keep,omitempty"`
 	Seed             int      `json:"seed,omitempty"`
 	NumPredict       int      `json:"num_predict,omitempty"`
+	NProbs 		     int      `json:"n_probs,omitempty"`
 	TopK             int      `json:"top_k,omitempty"`
 	TopP             float32  `json:"top_p,omitempty"`
 	TFSZ             float32  `json:"tfs_z,omitempty"`
@@ -268,6 +277,14 @@ type GenerateResponse struct {
 	Done    bool  `json:"done"`
 	Context []int `json:"context,omitempty"`
 
+	CompletionProbabilities []struct {
+		Content string `json:"content"`
+		Probs   []struct {
+			Prob   float64 `json:"prob"`
+			TokStr string  `json:"tok_str"`
+		} `json:"probs"`
+	} `json:"completion_probabilities,omitempty"`
+
 	Metrics
 }
 
@@ -402,6 +419,7 @@ func DefaultOptions() Options {
 		// set a minimal num_keep to avoid issues on context shifts
 		NumKeep:          4,
 		Temperature:      0.8,
+		NProbs: 		  0,
 		TopK:             40,
 		TopP:             0.9,
 		TFSZ:             1.0,
